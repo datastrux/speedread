@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeedRead Pro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚡ SpeedRead Pro</h1>
+    </header>
+
+    <div class="action-buttons-top">
+      <button id="startBtn" class="btn btn-primary">Start Reading</button>
+    </div>
+
+    <div class="section">
+      <h2>Reading Mode</h2>
+      <div class="mode-selector">
+        <label class="mode-option">
+          <input type="radio" name="mode" value="rsvp" checked>
+          <span class="mode-label">
+            <strong>RSVP</strong>
+            <small>Rapid Serial Visual Presentation</small>
+          </span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="mode" value="highlight">
+          <span class="mode-label">
+            <strong>Highlight Mode</strong>
+            <small>Progressive word highlighting</small>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Speed Settings</h2>
+      <div class="control-group">
+        <label for="speed">Words Per Minute: <span id="speedValue">300</span></label>
+        <input type="range" id="speed" min="100" max="1000" value="300" step="50">
+      </div>
+      
+      <div class="control-group">
+        <label for="fontSize">Font Size: <span id="fontSizeValue">24</span>px</label>
+        <input type="range" id="fontSize" min="16" max="72" value="24" step="2">
+      </div>
+
+      <div class="control-group">
+        <label for="wordChunk">Words per Chunk: <span id="wordChunkValue">1</span></label>
+        <input type="range" id="wordChunk" min="1" max="5" value="1" step="1">
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Display Options</h2>
+      <div class="control-group">
+        <label>
+          <input type="checkbox" id="showProgress" checked>
+          Show Progress Bar
+        </label>
+      </div>
+      <div class="control-group">
+        <label>
+          <input type="checkbox" id="darkMode">
+          Dark Mode
+        </label>
+      </div>
+      <div class="control-group">
+        <label>
+          <input type="checkbox" id="focusPoint" checked>
+          Show Focus Point (RSVP)
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Color Theme</h2>
+      <div class="color-controls">
+        <div class="control-group">
+          <label for="bgColor">Background</label>
+          <input type="color" id="bgColor" value="#ffffff">
+        </div>
+        <div class="control-group">
+          <label for="textColor">Text Color</label>
+          <input type="color" id="textColor" value="#000000">
+        </div>
+        <div class="control-group">
+          <label for="highlightColor">Highlight</label>
+          <input type="color" id="highlightColor" value="#ffeb3b">
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button id="saveSettings" class="btn btn-secondary">Save Settings</button>
+      <button id="resetSettings" class="btn btn-secondary">Reset to Defaults</button>
+    </div>
+
+    <div class="instructions">
+      <p><strong>How to use:</strong></p>
+      <ol>
+        <li>Select text on any webpage (optional)</li>
+        <li>Choose your preferred reading mode</li>
+        <li>Adjust speed and display settings</li>
+        <li>Click "Start Reading"</li>
+      </ol>
+      <p class="tip"><strong>Tip:</strong> If no text is selected, reading starts from the beginning automatically!</p>
+      <p class="tip"><strong>Controls:</strong> Space = Pause/Play, Esc = Exit, ← → = Adjust Speed, Click Progress Bar = Jump to Position</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
