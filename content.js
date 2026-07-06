@@ -15,6 +15,13 @@ class SpeedReader {
     this.isDragging = false; // Track drag state
     this.draggedElement = null; // Track dragged element
     this.dropTarget = null; // Track potential drop target
+    this.autoScrollInterval = null; // Auto-scroll during drag
+    this.lastDragY = 0; // Last Y position during drag
+    this.userScrolling = false; // Track if user is manually scrolling
+    this.lastScrollTime = 0; // Last time user scrolled
+    this.scrollTimeout = null; // Timeout for scroll detection
+    this.wheelHandler = null; // Wheel event handler
+    this.dragMoveHandler = null; // Drag move handler
   }
 
   // Initialize reader with settings
@@ -107,6 +114,9 @@ class SpeedReader {
     
     this.isPaused = false;
     this.isActive = true;
+    
+    // Enable manual scrolling with mouse wheel
+    this.setupManualScrolling();
     
     // Start highlighting
     this.startHighlight();
@@ -202,6 +212,7 @@ class SpeedReader {
       
       this.isDragging = true;
       this.draggedElement = wordSpan;
+      this.lastDragY = e.clientY;
       
       // Pause reading during drag
       this.isPaused = true;
@@ -225,6 +236,9 @@ class SpeedReader {
       document.body.appendChild(dragImage);
       e.dataTransfer.setDragImage(dragImage, dragImage.offsetWidth / 2, dragImage.offsetHeight / 2);
       setTimeout(() => dragImage.remove(), 0);
+      
+      // Start monitoring for edge scrolling
+      this.startEdgeScrollMonitoring();
     });
     
     // Drag over - highlight potential drop target
@@ -287,6 +301,9 @@ class SpeedReader {
     wordSpan.addEventListener('dragend', (e) => {
       this.isDragging = false;
       
+      // Stop auto-scrolling
+      this.stopEdgeScrollMonitoring();
+      
       // Clean up visual states
       if (this.draggedElement) {
         this.draggedElement.classList.remove('dragging');
@@ -300,6 +317,48 @@ class SpeedReader {
       
       this.draggedElement = null;
     });
+  }
+
+  // Start auto-scroll when dragging near screen edges
+  startEdgeScrollMonitoring() {
+    // Clear any existing interval
+    this.stopEdgeScrollMonitoring();
+    
+    // Add document-level drag listener
+    this.dragMoveHandler = (e) => {
+      this.lastDragY = e.clientY;
+    };
+    document.addEventListener('drag', this.dragMoveHandler);
+    
+    // Check edge proximity every 50ms
+    this.autoScrollInterval = setInterval(() => {
+      if (!this.isDragging) return;
+      
+      const edgeThreshold = 100; // pixels from edge
+      const scrollSpeed = 10; // pixels per interval
+      const windowHeight = window.innerHeight;
+      
+      // Scroll down if dragging near bottom
+      if (this.lastDragY > windowHeight - edgeThreshold) {
+        window.scrollBy(0, scrollSpeed);
+      }
+      // Scroll up if dragging near top
+      else if (this.lastDragY < edgeThreshold) {
+        window.scrollBy(0, -scrollSpeed);
+      }
+    }, 50);
+  }
+  
+  // Stop auto-scroll monitoring
+  stopEdgeScrollMonitoring() {
+    if (this.autoScrollInterval) {
+      clearInterval(this.autoScrollInterval);
+      this.autoScrollInterval = null;
+    }
+    if (this.dragMoveHandler) {
+      document.removeEventListener('drag', this.dragMoveHandler);
+      this.dragMoveHandler = null;
+    }
   }
 
   // Show visual feedback for successful drop
@@ -555,6 +614,25 @@ class SpeedReader {
     document.addEventListener('keydown', this.keyboardHandler);
   }
 
+  // Setup manual scrolling for highlight mode
+  setupManualScrolling() {
+    // Track user scrolling with mouse wheel
+    this.wheelHandler = (e) => {
+      // Mark that user is manually scrolling
+      this.userScrolling = true;
+      this.lastScrollTime = Date.now();
+      
+      // Reset the flag after a delay
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = setTimeout(() => {
+        this.userScrolling = false;
+      }, 100);
+    };
+    
+    // Add wheel event listener
+    document.addEventListener('wheel', this.wheelHandler, { passive: true });
+  }
+
   // Create Highlight Mode UI (overlay version - not used for in-page mode)
   createHighlightUI() {
     const content = document.createElement('div');
@@ -775,7 +853,12 @@ class SpeedReader {
     
     if (current) {
       current.classList.add('active');
-      current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Only auto-scroll if user hasn't manually scrolled in the last 2 seconds
+      const timeSinceManualScroll = Date.now() - this.lastScrollTime;
+      if (timeSinceManualScroll > 2000) {
+        current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       
       // Make active word draggable in highlight mode
       if (this.settings.mode === 'highlight' && !this.container) {
@@ -894,6 +977,15 @@ class SpeedReader {
       this.intervalId = null;
     }
     
+    // Clean up auto-scroll monitoring
+    this.stopEdgeScrollMonitoring();
+    
+    // Clean up scroll timeout
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = null;
+    }
+    
     // For highlight mode, restore original content
     if (this.settings.mode === 'highlight' && this.contentElement && this.originalContent) {
       this.contentElement.innerHTML = this.originalContent;
@@ -908,6 +1000,12 @@ class SpeedReader {
       if (this.keyboardHandler) {
         document.removeEventListener('keydown', this.keyboardHandler);
         this.keyboardHandler = null;
+      }
+      
+      // Remove wheel listener
+      if (this.wheelHandler) {
+        document.removeEventListener('wheel', this.wheelHandler);
+        this.wheelHandler = null;
       }
     } else if (this.container) {
       // For other modes, remove overlay container

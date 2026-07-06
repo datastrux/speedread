@@ -15,13 +15,17 @@ A powerful Chrome extension for speed reading with customizable reading modes, i
    - **In-page highlighting** - words are highlighted directly on the article (no overlay)
    - Progressive word-by-word highlighting with yellow background and border
    - Natural reading experience with the actual page layout
-   - Automatic scrolling keeps the highlighted word in view
+   - Automatic scrolling keeps the highlighted word in view (pauses when you scroll manually)
    - Floating control panel for speed adjustment and navigation
    - **Drag & Drop Repositioning** - drag the highlighted word to jump to any position
      - Hover over the highlighted word until cursor changes to "grab"
      - Drag to any other word on the page
      - Green highlight shows where reading will resume
      - Drop to instantly jump to that position
+     - **Edge Scrolling** - drag near the top or bottom of the screen to auto-scroll
+   - **Manual Scrolling** - use mouse wheel to scroll and explore the page while reading
+     - Auto-scroll pauses for 2 seconds when you manually scroll
+     - Find and click any word to jump to that position
 
 ### Customization Options
 
@@ -46,6 +50,9 @@ A powerful Chrome extension for speed reading with customizable reading modes, i
 **Mouse Controls:**
 - **Click Progress Bar**: Jump to any position in the reading
 - **Drag Highlighted Word** (Highlight Mode): Drag and drop the active word to reposition your reading location
+  - Drag near top/bottom edge to auto-scroll the page
+- **Mouse Wheel** (Highlight Mode): Scroll the page manually to explore and find new positions
+  - Auto-scroll pauses for 2 seconds when you use the mouse wheel
 
 ## 📦 Installation
 
