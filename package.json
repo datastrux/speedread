@@ -1,0 +1,40 @@
+{
+  "name": "speedread-pro",
+  "version": "1.0.0",
+  "description": "Advanced speed reading Chrome extension with customizable reading modes",
+  "author": "Your Name",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "zip": "node scripts/zip.js",
+    "icons": "node scripts/generate-icons.js",
+    "lint": "eslint *.js",
+    "format": "prettier --write \"**/*.{js,json,css,html,md}\"",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "chrome-extension",
+    "speed-reading",
+    "rsvp",
+    "bionic-reading",
+    "productivity",
+    "reading-tool"
+  ],
+  "devDependencies": {
+    "archiver": "^5.3.1",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3",
+    "sharp": "^0.32.6"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/speedread-pro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/speedread-pro/issues"
+  }
+}
