@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="64" cy="64" r="58" fill="url(#grad)"/>
+  
+  <!-- Book Pages -->
+  <rect x="40" y="35" width="48" height="58" fill="#ffffff" rx="2"/>
+  <line x1="64" y1="35" x2="64" y2="93" stroke="#e0e0e0" stroke-width="2"/>
+  
+  <!-- Lightning Bolt (Speed) -->
+  <path d="M 75 40 L 90 40 L 78 64 L 92 64 L 70 95 L 78 70 L 65 70 Z" 
+        fill="#ffeb3b" 
+        stroke="#ffc107" 
+        stroke-width="1.5"
+        stroke-linejoin="round"/>
+  
+  <!-- Reading Lines on Book -->
+  <line x1="45" y1="45" x2="60" y2="45" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+  <line x1="45" y1="52" x2="60" y2="52" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+  <line x1="45" y1="59" x2="58" y2="59" stroke="#667eea" stroke-width="1.5" opacity="0.4"/>
+</svg>
